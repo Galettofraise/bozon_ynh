@@ -71,14 +71,14 @@ ynh_system_user_create --username=$app --home_dir="$final_path"
 #=================================================
 ynh_script_progression --message="Creating a data directory..." --weight=1
 
-datadir=/home/yunohost.app/$app
-ynh_app_setting_set --app=$app --key=datadir --value=$datadir
+data_path=/home/yunohost.app/$app
+ynh_app_setting_set --app=$app --key=data_path --value=$data_path
 
-mkdir -p $datadir
+mkdir -p $data_path
 
-chmod 750 "$datadir"
-chmod -R o-rwx "$datadir"
-chown -R $app:www-data "$datadir"
+chmod 750 "$data_path"
+chmod -R o-rwx "$data_path"
+chown -R $app:www-data "$data_path"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
