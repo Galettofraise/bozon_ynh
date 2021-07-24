@@ -14,59 +14,39 @@
         "email": "ewilly@neuf.fr"
     },
     "requirements": {
-        "yunohost": ">= 3.8.1"
+        "yunohost": ">= 4.2.4"
     },
     "multi_instance": false,
     "services": [
         "nginx",
-        "php7.0-fpm"
+        "php7.3-fpm"
     ],
     "arguments": {
         "install" : [
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain for BoZoN",
-                    "fr": "Choisissez un domaine pour BoZoN"
-                },
                 "example": "domain.org"
             },
             {
                 "name": "path",
                 "type": "path",
-                "ask": {
-                    "en": "Choose a path for BoZoN",
-                    "fr": "Choisissez un chemin pour BoZoN"
-                },
                 "example": "/bozon",
                 "default": "/bozon"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Should this application be public? (if not, sharing file with unregistered users will still work)",
-                    "fr": "Est-ce que cette application doit être visible publiquement ? (dans le cas contraire, le partage de fichiers avec des utilisateurs externes fonctionnera tout de même)"
-                },
                 "default": false
             },
             {
                 "name": "admin",
                 "type": "user",
-                "ask": {
-                    "en": "Choose an admin user for BoZoN",
-                    "fr": "Choisissez un administrateur pour BoZoN"
-                },
                 "example": "homer"
             },
             {
                 "name": "password",
                 "type": "password",
-                "ask": {
-                    "en": "Choose an admin password for BoZoN",
-                    "fr": "Choisissez un mot de passe administrateur pour BoZoN"
-                },
                 "example": "super_secret_password"
             },
             {

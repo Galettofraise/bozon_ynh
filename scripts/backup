@@ -1,13 +1,11 @@
 #!/bin/bash
-# to test the functionnality :
-# yunohost backup create -n "bozon-test" --apps bozon
-# yunohost backup delete bozon-test
 
 #=================================================
 # GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
+
 #Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
@@ -22,31 +20,36 @@ ynh_abort_if_errors
 # LOAD SETTINGS
 #=================================================
 ynh_script_progression --message="Loading installation settings..."
+
 app=$YNH_APP_INSTANCE_NAME
+
 domain=$(ynh_app_setting_get --app="$app" --key=domain)
 final_path=$(ynh_app_setting_get --app="$app" --key=final_path)
 data_path=$(ynh_app_setting_get --app="$app" --key=data_path)
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
-# STANDARD BACKUP STEPS
+# DECLARE DATA AND CONF FILES TO BACKUP
+#=================================================
+ynh_print_info --message="Declaring files to be backed up..."
+
 #=================================================
 # BACKUP THE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Backing up the main app directory..."
-if [ -e "$final_path" ]; then
-	ynh_backup --src_path="$final_path"
-fi
+
+ynh_backup --src_path="$final_path"
+
 #=================================================
 # BACKUP THE NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Backing up nginx web server configuration..."
+
 ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
 # BACKUP THE PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Backing up php-fpm configuration..."
-ynh_backup --src_path="/etc/php/7.0/fpm/pool.d/$app.conf"
+
+ynh_backup --src_path="/etc/php/$phpversion/fpm/pool.d/$app.conf"
 
 ##=================================================
 # SPECIFIC BACKUP
@@ -54,6 +57,7 @@ ynh_backup --src_path="/etc/php/7.0/fpm/pool.d/$app.conf"
 # BACKUP THE DATA DIRECTORY
 #=================================================
 ynh_script_progression --message="Backing up data directory..."
+
 if [ -e "$data_path" ]; then
 	backup_core_only=$(ynh_app_setting_get "$app" backup_core_only)
 	if [ $backup_core_only -eq 0 ]; then
@@ -62,3 +66,9 @@ if [ -e "$data_path" ]; then
 		echo "Data dir will not be saved, because backup_core_only is set to true." >&2
 	fi
 fi
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
