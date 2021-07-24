@@ -95,9 +95,9 @@ else
 	echo "$data_path already exists and will not be overwritten" >&2
 fi
 
-chmod 750 "$datadir"
-chmod -R o-rwx "$datadir"
-chown -R $app:www-data "$datadir"
+chmod 750 "$data_path"
+chmod -R o-rwx "$data_path"
+chown -R $app:www-data "$data_path"
 
 #=================================================
 # RESTORE USER RIGHTS
